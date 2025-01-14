@@ -1,8 +1,8 @@
 const express = require('express');
-const cors = require("cors");
+const cors = require('cors');
 
 const ConnectionsDB = require('./database/Conections/conectionsDB');
- require('dotenv').config();
+require('dotenv').config();
 
 const app = express();
 
@@ -14,14 +14,13 @@ app.use(cors());
 
 ConnectionsDB();
 
-
 require('./routes')(app);
 app.get('/', (req, res) => {
-    res.send('hello word');
+  res.send('hello word');
 });
 
-const port = process.env.port || 304;
+const port = process.env.port || 3030;
 
 app.listen(port, () => {
-    console.log('Project execute in port:', port);
+  console.log('Project execute in port:', port);
 });
