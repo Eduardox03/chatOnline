@@ -50,5 +50,4 @@ router.put('/updateUser/:id', async (req, res) => {
   }
 });
 
-seachtUser;
-module.exports = router;
+ module.exports = router;

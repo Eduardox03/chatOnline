@@ -49,7 +49,7 @@ const updateUsers = async (id, dataUpdate) => {
     return userUpdated;
   } catch (error) {
     console.error('Error updating user:', error.message);
-    throw error; // Re-throw the error or handle it accordingly
+    throw error.message;
   }
 };
 

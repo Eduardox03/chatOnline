@@ -1,14 +1,20 @@
 const mongoose = require('mongoose');
 
 const chatSchema = mongoose.Schema({
-  send: mongoose.Schema.Types.ObjectId,
+  // usuario que envia el mensaje
+  send: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
+  // Mensaje de texto
   textMessage: String,
-  timesTap: Date,
-  messsageType: String,
+  // Fecha y hora del mensaje
+  timesTap: { type: Date, default: Date.now },
+  // Tipo de mensaje (texto, imagen.)
+  messageType: String,
+  // Estado del mensaje (enviado, leído.)
   status: String,
-  sendBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }],
+  // usuario que recive el mensaje
+  receivermessage: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
 });
 
-const chat = mongoose.model('chat', chatSchema);
+const Chat = mongoose.model('Chat', chatSchema);
 
-module.exports = chat;
+module.exports = Chat;
