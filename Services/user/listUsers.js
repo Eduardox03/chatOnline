@@ -20,5 +20,12 @@ const createUsers = async (infoUsuario) => {
         throw new Error('Error saving user: ' + error.message);
     }
 }
+const listUsers =async()=>{
+    try {
+       return await user.find({})
+    } catch (error) {
+        throw new error('Error list user',error.message)
+    }
+}
 
-module.exports = { createUsers }
+module.exports = { createUsers,listUsers }

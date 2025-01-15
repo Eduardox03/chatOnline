@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>Client connected</h1>
+
+  <!-- Cargar Socket.IO desde el servidor -->
+  <script src="http://localhost:3004/socket.io/socket.io.js"></script>  <!-- Aquí cambias a tu puerto de backend -->
+
+  <script>
+    // Conectar al servidor Socket.IO en el puerto 3004
+    const socket = io('http://localhost:3004/');  // Aquí también indicas explícitamente el puerto
+
+    // Enviar un mensaje al servidor
+    socket.emit('mensaje', { texto: 'Hola servidor' });
+
+    // Recibir la respuesta del servidor
+    socket.on('respuesta', (data) => {
+      console.log(data.message);    
+    });
+  </script>
+</body>
+</html>
