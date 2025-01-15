@@ -1,59 +1,59 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Estado de la Conexión Socket.io</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 50px;
-        }
-        .status {
-            font-size: 20px;
-            font-weight: bold;
-        }
-        .connected {
-            color: green;
-        }
-        .disconnected {
-            color: red;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin-top: 50px;
+      }
+      .status {
+        font-size: 20px;
+        font-weight: bold;
+      }
+      .connected {
+        color: green;
+      }
+      .disconnected {
+        color: red;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Estado de la conexión de Socket.io</h1>
     <p class="status disconnected" id="status">Esperando conexión...</p>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        const socket = io(); // Conectar con el servidor de Socket.io
+      const socket = io(); // Conectar con el servidor de Socket.io
 
-        // Evento cuando el cliente se conecta
-        socket.on('connect', () => {
-            document.getElementById('status').textContent = '¡Conectado a Socket.io!';
-            document.getElementById('status').classList.remove('disconnected');
-            document.getElementById('status').classList.add('connected');
-        });
+      // Evento cuando el cliente se conecta
+      socket.on('connect', () => {
+        document.getElementById('status').textContent = '¡Conectado a Socket.io!';
+        document.getElementById('status').classList.remove('disconnected');
+        document.getElementById('status').classList.add('connected');
+      });
 
-        // Evento cuando el cliente se desconecta
-        socket.on('disconnect', () => {
-            document.getElementById('status').textContent = 'Desconectado de Socket.io';
-            document.getElementById('status').classList.remove('connected');
-            document.getElementById('status').classList.add('disconnected');
-        });
-        // Evento que recibe los cambios de la colección de usuarios
-        socket.on('userChange', (changeData) => {
-            console.log('Cambio recibido:', changeData);
+      // Evento cuando el cliente se desconecta
+      socket.on('disconnect', () => {
+        document.getElementById('status').textContent = 'Desconectado de Socket.io';
+        document.getElementById('status').classList.remove('connected');
+        document.getElementById('status').classList.add('disconnected');
+      });
+      // Evento que recibe los cambios de la colección de usuarios
+      socket.on('userChange', (changeData) => {
+        console.log('Cambio recibido:', changeData);
 
-            // Mostrar el cambio en la UI
-            const userChangeDiv = document.getElementById('user-change');
-            userChangeDiv.innerHTML = `
+        // Mostrar el cambio en la UI
+        const userChangeDiv = document.getElementById('user-change');
+        userChangeDiv.innerHTML = `
                 <p><strong>Cambio en la colección de usuarios:</strong></p>
                 <pre>${JSON.stringify(changeData, null, 2)}</pre>
             `;
-        });
+      });
     </script>
-</body>
+  </body>
 </html>
