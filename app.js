@@ -2,55 +2,51 @@ const express = require('express');
 const cors = require("cors");
 const morgan = require('morgan');
 const http = require('http');
- 
-const ConnectionsDB = require('./database/Conections/conectionsDB');
-const socketIo = require('socket.io')  
-require('dotenv').config();
 
+ const socketIo = require('socket.io');
+const changeEventWath = require('./database/sokets');
+require('dotenv').config();
 const app = express();
+
+const server = http.createServer(app);
+const Oisokets = socketIo(server);
+
+app.use(cors());
 
 // Middleware para procesar JSON y datos codificados en URL
 app.use(express.json()); // Para analizar cuerpos JSON
 app.use(express.urlencoded({ extended: true })); // Para analizar cuerpos con datos de formulario (x-www-form-urlencoded)
 app.use(express.static('public'));
-app.use(cors());
-
-//morgan para mostrar los logs en la consola
 app.use(morgan('dev'));
-ConnectionsDB();
 
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html'); // Servir el archivo HTML
+});
 
+// Configuración de eventos de Socket.io
+Oisokets.on('connection', (socket) => {
+    console.log('New client conected', socket.id);
+
+    // Manejar el mensaje recibido
+    socket.on('mensaje recibido', (data) => {
+        console.log('Mensaje recibido:', data);
+        Oisokets.emit('mensaje', data);  
+    });
+
+    // Evento de desconexión
+    socket.on('disconnect', () => {
+        console.log('Cliente desconectado', socket.id);
+    });
+});
+
+// Llamar a la función de cambio de evento (change stream)
+changeEventWath(Oisokets);
+
+// Rutas adicionales
 require('./routes')(app);
 
-
-const server = http.createServer(app);
-
- 
-// Inicializar Socket.IO
-const io = socketIo(server, {
-    cors: {
-      origin: "http://localhost:8080",   
-      methods: ["GET", "POST"]
-    }
-  });
-
-io.on('connection', (socket) => {
-    console.log('Client conectado a socket.io');
-  
-    socket.on('mensaje', (data) => {
-      console.log('Mensaje recibido:', data);
-      socket.emit('respuesta', { message: 'Mensaje recibido.' });
-    });
-  
-    socket.on('disconnect', () => {
-      console.log('Client disconnected');
-    });
-  });
-  
-
-
-const port = process.env.port || 304;
-
-app.listen(port, () => {
-    console.log('Project execute in port:', port);
+// Establecer el puerto
+const port = process.env.PORT || 3004;
+server.listen(port, () => {
+    console.log(`Servidor ejecutándose en el puerto ${port}`);
 });
